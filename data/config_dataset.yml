@@ -1,0 +1,164 @@
+fNIRS2MW:
+#  put your path here, here is a sample path
+  global_path: /home/Documents/data/
+
+  experiment_type:
+# you can choose run experiments on which dataset
+    - visual
+#    - audio
+
+  slide_window_path: /experiment/processed/
+
+  slide_window_options:
+# Currently,we have three options totally (task, task + rest, task + nasa + rest)
+# But we only employ task data for now, we can add other two options later
+    - bpf_size_10ts_stride_3ts
+    - bpf_size_25ts_stride_3ts
+    - bpf_size_50ts_stride_3ts
+    - bpf_size_100ts_stride_3ts
+    - bpf_size_150ts_stride_3ts
+    - bpf_size_200ts_stride_3ts
+# now the non overlapping chunk size is set to 142 timestamps, roughly equal to 150 ts.
+    - bpf_non_overlapping_task_142ts
+    - bpf_whole_data
+# Below are the data without passing bpf
+    - non_overlapping_task_142ts
+    - size_100ts_stride_3ts
+    - size_150ts_stride_3ts
+
+  eligible_subject_list:
+    visual:
+      - 1
+      - 13
+      - 14
+      - 15
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 27
+      - 28
+      - 29
+      - 31
+      - 32
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 40
+      - 42
+      - 43
+      - 44
+      - 45
+      - 46
+      - 47
+      - 48
+      - 49
+      - 5
+      - 51
+      - 52
+      - 54
+      - 55
+      - 56
+      - 57
+      - 58
+      - 60
+      - 61
+      - 62
+      - 63
+      - 64
+      - 65
+      - 68
+      - 69
+      - 7
+      - 70
+      - 71
+      - 72
+      - 73
+      - 74
+      - 75
+      - 76
+      - 78
+      - 79
+      - 80
+      - 81
+      - 82
+      - 83
+      - 84
+      - 85
+      - 86
+      - 91
+      - 92
+      - 93
+      - 94
+      - 95
+      - 97
+    audio:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 17
+      - 18
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 26
+      - 27
+      - 28
+      - 29
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 39
+      - 40
+      - 41
+      - 42
+      - 43
+      - 44
+      - 45
+      - 46
+      - 47
+      - 48
+      - 49
+      - 50
+      - 51
+      - 52
+
+train_ratio:
+  - null
+
+val_ratio:
+  - null
+
+test_ratio:
+  - null
+
+
+

@@ -1,0 +1,74 @@
+model:
+  - NIRSformer
+#  - contra_NIRSformer
+
+batch_size:
+  - 64
+  - 128
+  - 256
+  - 512
+
+feature_size:
+  - 8
+
+num_timesteps:
+  - 150
+
+labels:
+  - [0, 2]
+#  - [0, 1, 2, 3]
+
+dropout:
+  - 0.25
+  - 0.5
+  - 0.75
+
+lr:
+  - 0.00001
+  - 0.0001
+  - 0.001
+  - 0.01
+
+wd:
+  - 0.0001
+
+n_epoch:
+  - 300
+
+patience:
+#  used for early-stopping
+  - 20
+
+log_every_n_steps:
+  - 10
+
+dataset_path:
+  - config_dataset.yml
+
+paradigm:
+# - subject-specific
+## Under generic mode, both generic and generic subject-specific paradigms will be run
+#  - generic
+  - contrastive
+
+data_mode:
+  - visual
+#  - audio
+
+mode:
+#  - "x"
+  - "xy"
+#  - "contrastive"
+
+contra_model:
+#  - SimCLR
+  - SimSiam
+
+T: # temperature for NT-XENT loss function to use
+  - 1.0
+
+linear_lr:
+  - 0.001
+
+linear_epoch:
+  - 100

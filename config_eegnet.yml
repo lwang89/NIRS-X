@@ -1,0 +1,85 @@
+model:
+  - EEGNet
+#  - contra_EEGNet
+
+batch_size:
+  - 64
+  - 128
+  - 256
+  - 512
+
+feature_size:
+  - 8
+
+num_timesteps:
+  - 150
+
+labels:
+  - [0, 2]
+#  - [0, 1, 2, 3]
+
+F1:
+  - 4
+
+D:
+  - 2
+
+F2:
+  - 8
+
+avgpool2d_1:
+  - 4
+
+avgpool2d_2:
+  - 8
+
+dropout:
+  - 0.25
+  - 0.5
+  - 0.75
+
+lr:
+  - 0.00001
+  - 0.0001
+  - 0.001
+  - 0.1
+
+n_epoch:
+  - 300
+
+log_every_n_steps:
+  - 10
+
+dataset_path:
+  - config_dataset.yml
+
+patience:
+  - 20
+
+paradigm:
+  - subject-specific
+## Under generic mode, both generic and generic subject-specific paradigms will be run
+#   - generic
+#  - contrastive
+
+data_mode:
+  - visual
+#  - audio
+
+mode:
+#  - "x"
+  - "xy"
+#  - "contrastive"
+
+contra_model:
+#  - SimCLR
+  - SimSiam
+
+T: # temperature for NT-XENT loss function to use
+  - 1.0
+
+linear_lr:
+  - 0.001
+
+linear_epoch:
+  - 100
