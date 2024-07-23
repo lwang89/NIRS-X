@@ -8,10 +8,11 @@ import yaml
 from data.dataset import fNIRS2MW, naive_split
 from utils import draw_graph, generate_filepath
 import pathlib
-from trainer import Trainer
+from base_trainer import BaseTrainer
 from torch.utils.data import DataLoader
 
-class ExpRunner:
+
+class BaseExpRunner:
 
     def __init__(self, config_path, slide_window_option=4):
         self.config_dict = yaml.load(open(config_path, "r"), Loader=yaml.FullLoader)
@@ -62,7 +63,8 @@ class ExpRunner:
         results_list.apply(lambda row: draw_graph(graph_filepath, "sub" + str(row.name),
                                                   row['train_loss'], row["val_loss"], row["val_accu"]), axis=1)
 
-    def exp_train(self, config, train_data, val_data, subject_id_list, load_model=False, model_filename=None, model_filepath=None):
+    def exp_train(self, config, train_data, val_data, subject_id_list, load_model=False, model_filename=None,
+                  model_filepath=None):
         """
         description:
         1. load and train with all hyperparameter configuration settings;
@@ -82,12 +84,12 @@ class ExpRunner:
 
         if load_model:
             # For generic subject-specific paradigm
-            trainer = Trainer(config, train_data, val_data, subject_id_list, paradigm="generic subject-specific")
+            trainer = BaseTrainer(config, train_data, val_data, subject_id_list, paradigm="generic subject-specific")
             trainer.network.load_state_dict(torch.load(model_filepath + model_filename))
 
         else:
             # For subject specific and generic paradigms
-            trainer = Trainer(config, train_data, val_data, subject_id_list)
+            trainer = BaseTrainer(config, train_data, val_data, subject_id_list)
 
         # Fit the model to data, get the filepath and filename to the trained model and its training results
         model_filename, model_filepath, train_loss, val_loss, val_acc = trainer.train()
@@ -115,13 +117,12 @@ class ExpRunner:
         :return: None
         """
         # Load the trained model
-        model = Trainer(config=model_info.config)
+        model = BaseTrainer(config=model_info.config)
         model.network.load_state_dict(torch.load(model_info.model_filepath + model_info.model_filename))
 
         test_accs = []
         # Run testing and save testing accuracy for each subject in the subject id list
         for subject_id_idx in range(len(model_info.subject_id_list)):
-            
             # Get test data for the specified subject
             subject_id = model_info.subject_id_list[subject_id_idx]
             subject_test_data = test_data_list[subject_id_idx]
@@ -167,7 +168,9 @@ class ExpRunner:
         subject_whole_data = fNIRS2MW(slide_window_option=self.slide_window_option, config_path=self.dataset_path,
                                       subject_list=[subject_id], labels=self.labels, mode=mode)
 
-        subject_whole_train_data, subject_test_data = naive_split(subject_whole_data, self.subject_specific_train_test_split_ratio)
-        subject_train_data, subject_val_data = naive_split(subject_whole_train_data, self.subject_specific_train_val_split_ratio)
+        subject_whole_train_data, subject_test_data = naive_split(subject_whole_data,
+                                                                  self.subject_specific_train_test_split_ratio)
+        subject_train_data, subject_val_data = naive_split(subject_whole_train_data,
+                                                           self.subject_specific_train_val_split_ratio)
 
         return subject_train_data, subject_val_data, subject_test_data

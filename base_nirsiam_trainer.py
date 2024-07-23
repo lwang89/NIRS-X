@@ -1,21 +1,14 @@
-import logging
 import torch
-from torch import nn
-from torch.backends import cudnn
 from torch.utils.data import DataLoader
-from tqdm import trange
-from data.dataset import fNIRS2MW, naive_split
-from early_stopper import EarlyStopper
-from models import get_model
-from utils import save_config_file, accuracy, draw_graph
+from utils.early_stopper import EarlyStopper
 from models.base_models import linear_classifier
 from contra_loss.contra_loss import SimSiam
-from trainer import Trainer
+from base_trainer import BaseTrainer
 import warnings
 warnings.simplefilter("ignore")
 
 
-class contra_Trainer(Trainer):
+class BaseNIRSiamTrainer(BaseTrainer):
     def __init__(self, config=None, pretext_set=None, train_set=None, val_set=None, test_set=None, labels=None, subject_id_list=None):
         super().__init__(config=config, train_set=train_set, val_set=val_set, paradigm="contrastive", subject_id_list=subject_id_list)
 

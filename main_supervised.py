@@ -1,13 +1,12 @@
-from experiment_runner import ExpRunner
+from base_experiment_runner import BaseExpRunner
 from copy import deepcopy
 
 import pandas as pd
 from utils import split_generic_test_data, split_generic_training_data, generate_buckets
-from hyperparameter_optimizer import grid_search
-from torch.utils.data import DataLoader
+from utils.hyperparameter_optimizer import grid_search
 
 
-class SupervisedExpRunner(ExpRunner):
+class SupervisedExpRunner(BaseExpRunner):
     def run(self):
         """
 
@@ -122,5 +121,5 @@ class SupervisedExpRunner(ExpRunner):
 
 
 if __name__ == '__main__':
-    ser = SupervisedExpRunner("config_nirsformer.yml")
+    ser = SupervisedExpRunner("models/config_nirsformer.yml")
     ser.run()

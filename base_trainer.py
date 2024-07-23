@@ -8,11 +8,11 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
 from models import get_model
-from early_stopper import EarlyStopper
+from utils.early_stopper import EarlyStopper
 from utils import save_config_file, accuracy, generate_filepath
-from models.base_models import linear_classifier
 
-class Trainer:
+
+class BaseTrainer:
     """The base class for training models with data."""
 
     def __init__(self, config, train_set=None, val_set=None, subject_id_list=None, paradigm=None, save_model=True):
@@ -80,7 +80,7 @@ class Trainer:
         logging.info("Training has finished.")
 
         if self.save_model:
-            # Save best model; TODO: changed name from .pth.tar to .pth, should we revise back
+            # Save best model;
             model_filename = self.config_name + '.pth'
             model_filepath = self.writer.log_dir
             best_model_state_dict = early_stopper.best_model_state_dict if early_stopper.best_model_state_dict is not None else self.network.state_dict()

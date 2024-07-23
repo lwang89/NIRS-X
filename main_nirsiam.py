@@ -1,23 +1,15 @@
-import numpy
-import torch
-from experiment_runner import ExpRunner
-from copy import deepcopy
+from base_experiment_runner import BaseExpRunner
 
-import logging
-import os
-import random
-import time
 from argparse import Namespace
 from copy import deepcopy
-from datetime import datetime
 
 import pandas as pd
 from data.dataset import fNIRS2MW
-from hyperparameter_optimizer import contra_grid_search
-from contrastive_trainer import contra_Trainer
+from utils.hyperparameter_optimizer import contra_grid_search
+from base_nirsiam_trainer import BaseNIRSiamTrainer
 
 
-class ContraExpRunner(ExpRunner):
+class NIRSiamExpRunner(BaseExpRunner):
 
     def run(self):
         # Save training and testing results and model metadata trained under contrastive learning paradigm
@@ -61,8 +53,8 @@ class ContraExpRunner(ExpRunner):
 
     def exp_pretext_and_downstream(self, config, pretext_data, train_data, val_data, test_data, subject_id, labels):
         print("Pretext under config {}".format(config))
-        contra_trainer = contra_Trainer(config, pretext_set=pretext_data, train_set=train_data, val_set=val_data,
-                                        test_set=test_data, labels=labels, subject_id_list=[subject_id])
+        contra_trainer = BaseNIRSiamTrainer(config, pretext_set=pretext_data, train_set=train_data, val_set=val_data,
+                                            test_set=test_data, labels=labels, subject_id_list=[subject_id])
 
         # Pretrain the encoder with the contrastive pretext task and get the training loss and accuracy records
         contra_train_loss = contra_trainer.pretext()
@@ -84,5 +76,5 @@ class ContraExpRunner(ExpRunner):
 
 
 if __name__ == '__main__':
-    ser = ContraExpRunner("config_nirsformer.yml")
-    ser.run()
+    nirsiam_experiment_runner = NIRSiamExpRunner("models/config_nirsformer.yml")
+    nirsiam_experiment_runner.run()

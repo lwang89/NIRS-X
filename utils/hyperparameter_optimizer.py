@@ -2,8 +2,8 @@
 import time
 import inspect
 from scipy import stats
-from trainer import Trainer
-from contrastive_trainer import contra_Trainer
+from base_trainer import BaseTrainer
+from base_nirsiam_trainer import BaseNIRSiamTrainer
 from argparse import Namespace
 from copy import deepcopy
 from utils import create_grid
@@ -192,13 +192,13 @@ class GridSearchTuner(HyperParameters):
 
 
 def hpo_supervised_objective(config, train_data, val_data, paradigm):
-    trainer = Trainer(config, train_data, val_data, paradigm=paradigm, save_model=False)
+    trainer = BaseTrainer(config, train_data, val_data, paradigm=paradigm, save_model=False)
     _, _, val_acc = trainer.train()
     return 1 - sum(val_acc) / len(val_acc) / 100
 
 
 def hpo_contrastive_objective(config, pretext_data, train_data, val_data, test_data, labels):
-    contra_trainer = contra_Trainer(config, pretext_data, train_data, val_data, test_data, labels, subject_id_list=[-1])
+    contra_trainer = BaseNIRSiamTrainer(config, pretext_data, train_data, val_data, test_data, labels, subject_id_list=[-1])
     _ = contra_trainer.pretext()
     _, val_loss, val_acc, _, test_acc = contra_trainer.linear_probe()
 
